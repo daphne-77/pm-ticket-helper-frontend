@@ -4,7 +4,7 @@
 const CONFIG = {
   // 後端 API 網址（部署後請修改）
   // 例如：https://pm-ticket-api.zeabur.app
-  API_BASE_URL: 'https://pm-ticket-helper-api.zeabur.app/',
+  API_BASE_URL: 'https://pm-ticket-helper-api.zeabur.app',
   
   // Claude API 設定
   CLAUDE_MODEL: 'claude-sonnet-4-20250514',
