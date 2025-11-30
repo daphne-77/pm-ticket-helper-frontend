@@ -38,99 +38,26 @@
   </script>
   <style>
     [v-cloak] { display: none; }
-    
-    .fade-enter-active, .fade-leave-active {
-      transition: opacity 0.3s ease;
-    }
-    .fade-enter-from, .fade-leave-to {
-      opacity: 0;
-    }
-
-    .slide-enter-active, .slide-leave-active {
-      transition: all 0.3s ease;
-    }
-    .slide-enter-from, .slide-leave-to {
-      opacity: 0;
-      transform: translateY(-10px);
-    }
-
-    /* Custom scrollbar */
-    ::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #f1f5f9;
-      border-radius: 4px;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #cbd5e1;
-      border-radius: 4px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #94a3b8;
-    }
-
-    /* Checkbox styling */
-    input[type="checkbox"] {
-      accent-color: #0c8ee7;
-    }
-
-    /* Markdown output styling */
-    .markdown-output {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.875rem;
-      line-height: 1.6;
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
-
-    .markdown-output table {
-      border-collapse: collapse;
-      width: 100%;
-      margin: 1rem 0;
-    }
-
-    .markdown-output th,
-    .markdown-output td {
-      border: 1px solid #e2e8f0;
-      padding: 0.5rem;
-      text-align: left;
-    }
-
-    .markdown-output th {
-      background: #f8fafc;
-      font-weight: 600;
-    }
-
-    /* Loading animation */
-    @keyframes pulse-ring {
-      0% { transform: scale(0.8); opacity: 1; }
-      100% { transform: scale(1.3); opacity: 0; }
-    }
-
-    .loading-dot {
-      animation: pulse-ring 1.5s ease-out infinite;
-    }
-
-    /* Image preview */
-    .image-preview {
-      position: relative;
-      overflow: hidden;
-    }
-
-    .image-preview img {
-      transition: transform 0.2s ease;
-    }
-
-    .image-preview:hover img {
-      transform: scale(1.05);
-    }
+    .fade-enter-active, .fade-leave-active { transition: opacity 0.3s ease; }
+    .fade-enter-from, .fade-leave-to { opacity: 0; }
+    .slide-enter-active, .slide-leave-active { transition: all 0.3s ease; }
+    .slide-enter-from, .slide-leave-to { opacity: 0; transform: translateY(-10px); }
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    input[type="checkbox"] { accent-color: #0c8ee7; }
+    .markdown-output { font-family: 'JetBrains Mono', monospace; font-size: 0.875rem; line-height: 1.6; white-space: pre-wrap; word-break: break-word; }
+    .markdown-output table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+    .markdown-output th, .markdown-output td { border: 1px solid #e2e8f0; padding: 0.5rem; text-align: left; }
+    .markdown-output th { background: #f8fafc; font-weight: 600; }
+    .image-preview { position: relative; overflow: hidden; }
+    .image-preview img { transition: transform 0.2s ease; }
+    .image-preview:hover img { transform: scale(1.05); }
   </style>
 </head>
 <body class="bg-slate-50 min-h-screen font-sans">
   <div id="app" v-cloak>
-    <!-- Header -->
     <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
       <div class="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
         <div class="flex items-center gap-3">
@@ -144,17 +71,17 @@
             <p class="text-xs text-slate-500">快速產生開發 Ticket</p>
           </div>
         </div>
-        
-        <!-- API Key 狀態 -->
         <div class="flex items-center gap-3">
-          <div v-if="apiStatus.available" class="text-xs text-slate-500">
+          <div v-if="isLoggedIn && apiStatus.available" class="text-xs text-slate-500">
             試用剩餘: <span class="font-semibold text-brand-600">{{ apiStatus.remaining }}</span> / {{ apiStatus.limit }} 次
           </div>
-          <button 
-            @click="showApiKeyModal = true"
-            class="flex items-center gap-2 px-3 py-2 text-sm rounded-lg transition-colors"
-            :class="userApiKey ? 'bg-green-50 text-green-700' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'"
-          >
+          <button v-if="isLoggedIn" @click="logout" class="flex items-center gap-2 px-3 py-2 text-sm rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+            </svg>
+            登出試用
+          </button>
+          <button @click="showApiKeyModal = true" class="flex items-center gap-2 px-3 py-2 text-sm rounded-lg transition-colors" :class="userApiKey ? 'bg-green-50 text-green-700' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/>
             </svg>
@@ -164,9 +91,7 @@
       </div>
     </header>
 
-    <!-- Main Content -->
     <main class="max-w-5xl mx-auto px-4 py-8">
-      <!-- 未設定後端提示 -->
       <div v-if="!apiBaseUrl && !userApiKey" class="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-xl">
         <div class="flex items-start gap-3">
           <svg class="w-5 h-5 text-amber-500 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -179,23 +104,29 @@
         </div>
       </div>
 
-      <!-- Step 1: 輸入表單 -->
-      <div v-if="currentStep === 'form'" class="space-y-6">
-        <!-- Ticket 類型 -->
+      <div v-if="apiBaseUrl && requireLogin && !isLoggedIn && !userApiKey" class="mb-6 p-6 bg-white border border-slate-200 rounded-2xl shadow-sm">
+        <div class="text-center">
+          <div class="w-16 h-16 bg-brand-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+            </svg>
+          </div>
+          <h2 class="text-lg font-semibold text-slate-800 mb-2">請登入使用試用模式</h2>
+          <p class="text-sm text-slate-500 mb-6">或點擊右上角輸入自己的 API Key</p>
+          <form @submit.prevent="login" class="max-w-xs mx-auto space-y-4">
+            <input type="text" v-model="loginForm.username" placeholder="帳號" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent" required>
+            <input type="password" v-model="loginForm.password" placeholder="密碼" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent" required>
+            <button type="submit" :disabled="isLoggingIn" class="w-full px-4 py-3 bg-brand-500 text-white font-semibold rounded-xl hover:bg-brand-600 disabled:opacity-50 transition-colors">{{ isLoggingIn ? '登入中...' : '登入' }}</button>
+          </form>
+        </div>
+      </div>
+
+      <div v-if="currentStep === 'form' && canUseApp" class="space-y-6">
         <section class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
           <h2 class="text-base font-semibold text-slate-800 mb-4">Ticket 類型</h2>
           <div class="flex gap-3">
-            <label 
-              v-for="type in ticketTypes" 
-              :key="type.value"
-              class="flex-1 relative cursor-pointer"
-            >
-              <input 
-                type="radio" 
-                :value="type.value" 
-                v-model="form.type" 
-                class="peer sr-only"
-              >
+            <label v-for="type in ticketTypes" :key="type.value" class="flex-1 relative cursor-pointer">
+              <input type="radio" :value="type.value" v-model="form.type" class="peer sr-only">
               <div class="p-4 rounded-xl border-2 transition-all peer-checked:border-brand-500 peer-checked:bg-brand-50 border-slate-200 hover:border-slate-300">
                 <div class="flex items-center gap-3">
                   <span class="text-2xl">{{ type.icon }}</span>
@@ -209,127 +140,66 @@
           </div>
         </section>
 
-        <!-- 基本資訊 -->
         <section class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
           <h2 class="text-base font-semibold text-slate-800 mb-4">基本資訊</h2>
           <div class="space-y-4">
-            <!-- 描述 -->
             <div>
-              <label class="block text-sm font-medium text-slate-700 mb-2">
-                {{ form.type === 'feat' ? '功能描述' : '問題描述' }} <span class="text-red-500">*</span>
-              </label>
-              <textarea
-                v-model="form.description"
-                :placeholder="form.type === 'feat' ? '請描述要實作的功能...' : '請描述遇到的問題...'"
-                class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent resize-none transition-shadow"
-                rows="4"
-              ></textarea>
+              <label class="block text-sm font-medium text-slate-700 mb-2">{{ form.type === 'feat' ? '功能描述' : '問題描述' }} <span class="text-red-500">*</span></label>
+              <textarea v-model="form.description" :placeholder="form.type === 'feat' ? '請描述要實作的功能...' : '請描述遇到的問題...'" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent resize-none" rows="4"></textarea>
             </div>
-
-            <!-- 三欄 -->
             <div class="grid grid-cols-3 gap-4">
-              <!-- 影響範圍 -->
               <div>
                 <label class="block text-sm font-medium text-slate-700 mb-2">影響範圍</label>
-                <select 
-                  v-model="form.scope"
-                  class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent bg-white"
-                >
+                <select v-model="form.scope" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 bg-white">
                   <option value="frontend">前端</option>
                   <option value="backend">後端</option>
                   <option value="fullstack">全端</option>
                 </select>
               </div>
-
-              <!-- 優先級 -->
               <div>
                 <label class="block text-sm font-medium text-slate-700 mb-2">優先級</label>
-                <select 
-                  v-model="form.priority"
-                  class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent bg-white"
-                >
+                <select v-model="form.priority" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 bg-white">
                   <option value="urgent">緊急</option>
                   <option value="normal">一般</option>
                   <option value="low">低</option>
                 </select>
               </div>
-
-              <!-- 平台 -->
               <div>
                 <label class="block text-sm font-medium text-slate-700 mb-2">平台</label>
-                <select 
-                  v-model="form.platform"
-                  class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent bg-white"
-                >
+                <select v-model="form.platform" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 bg-white">
                   <option value="web">Web</option>
                   <option value="app">App</option>
                   <option value="both">兩者皆是</option>
                 </select>
               </div>
             </div>
-
-            <!-- Figma 連結 -->
             <div>
               <label class="block text-sm font-medium text-slate-700 mb-2">Figma 連結</label>
-              <input
-                type="url"
-                v-model="form.figmaUrl"
-                placeholder="https://www.figma.com/design/..."
-                class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent"
-              >
+              <input type="url" v-model="form.figmaUrl" placeholder="https://www.figma.com/design/..." class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500">
             </div>
           </div>
         </section>
 
-        <!-- 截圖上傳 -->
         <section class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
           <h2 class="text-base font-semibold text-slate-800 mb-4">截圖上傳</h2>
-          
-          <!-- 上傳區域 -->
-          <div 
-            @dragover.prevent="isDragging = true"
-            @dragleave.prevent="isDragging = false"
-            @drop.prevent="handleDrop"
-            @click="$refs.fileInput.click()"
-            class="border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-colors"
-            :class="isDragging ? 'border-brand-500 bg-brand-50' : 'border-slate-300 hover:border-brand-400'"
-          >
-            <input 
-              ref="fileInput" 
-              type="file" 
-              accept="image/*" 
-              multiple 
-              class="hidden"
-              @change="handleFileSelect"
-            >
+          <div @dragover.prevent="isDragging = true" @dragleave.prevent="isDragging = false" @drop.prevent="handleDrop" @click="$refs.fileInput.click()" class="border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-colors" :class="isDragging ? 'border-brand-500 bg-brand-50' : 'border-slate-300 hover:border-brand-400'">
+            <input ref="fileInput" type="file" accept="image/*" multiple class="hidden" @change="handleFileSelect">
             <svg class="w-12 h-12 mx-auto text-slate-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
             </svg>
             <p class="text-slate-600 mb-1">拖曳圖片至此處，或點擊上傳</p>
             <p class="text-xs text-slate-400">支援 PNG、JPG、GIF，可上傳多張</p>
           </div>
-
-          <!-- 預覽區域 -->
           <div v-if="form.images.length > 0" class="mt-4 grid grid-cols-4 gap-3">
-            <div 
-              v-for="(img, index) in form.images" 
-              :key="index"
-              class="image-preview relative aspect-video bg-slate-100 rounded-lg overflow-hidden group"
-            >
+            <div v-for="(img, index) in form.images" :key="index" class="image-preview relative aspect-video bg-slate-100 rounded-lg overflow-hidden group">
               <img :src="img.preview" class="w-full h-full object-cover">
-              <button 
-                @click="removeImage(index)"
-                class="absolute top-2 right-2 w-6 h-6 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
-              >
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                </svg>
+              <button @click="removeImage(index)" class="absolute top-2 right-2 w-6 h-6 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
               </button>
             </div>
           </div>
         </section>
 
-        <!-- 翻譯設定 -->
         <section class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
           <div class="flex items-center justify-between mb-4">
             <h2 class="text-base font-semibold text-slate-800">翻譯設定</h2>
@@ -338,64 +208,29 @@
               <div class="w-11 h-6 bg-slate-200 peer-focus:ring-2 peer-focus:ring-brand-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-500"></div>
             </label>
           </div>
-
           <transition name="slide">
             <div v-if="form.needTranslation" class="space-y-3">
               <p class="text-sm text-slate-500">選擇需要翻譯的語言：</p>
-              
-              <!-- Web 語言 -->
               <div v-if="form.platform === 'web' || form.platform === 'both'" class="space-y-2">
                 <div class="flex items-center justify-between">
                   <span class="text-sm font-medium text-slate-700">Web 語言</span>
-                  <button 
-                    @click="toggleAllLanguages('web')"
-                    class="text-xs text-brand-600 hover:text-brand-700"
-                  >
-                    {{ isAllSelected('web') ? '取消全選' : '全選' }}
-                  </button>
+                  <button @click="toggleAllLanguages('web')" class="text-xs text-brand-600 hover:text-brand-700">{{ isAllSelected('web') ? '取消全選' : '全選' }}</button>
                 </div>
                 <div class="flex flex-wrap gap-2">
-                  <label 
-                    v-for="lang in webLanguages" 
-                    :key="lang.code"
-                    class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border cursor-pointer transition-colors"
-                    :class="form.languages.includes(lang.code) ? 'border-brand-500 bg-brand-50 text-brand-700' : 'border-slate-200 hover:border-slate-300'"
-                  >
-                    <input 
-                      type="checkbox" 
-                      :value="lang.code" 
-                      v-model="form.languages"
-                      class="sr-only"
-                    >
+                  <label v-for="lang in webLanguages" :key="lang.code" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border cursor-pointer transition-colors" :class="form.languages.includes(lang.code) ? 'border-brand-500 bg-brand-50 text-brand-700' : 'border-slate-200 hover:border-slate-300'">
+                    <input type="checkbox" :value="lang.code" v-model="form.languages" class="sr-only">
                     <span class="text-sm">{{ lang.name }}</span>
                   </label>
                 </div>
               </div>
-
-              <!-- App 語言 -->
               <div v-if="form.platform === 'app'" class="space-y-2">
                 <div class="flex items-center justify-between">
                   <span class="text-sm font-medium text-slate-700">App 語言</span>
-                  <button 
-                    @click="toggleAllLanguages('app')"
-                    class="text-xs text-brand-600 hover:text-brand-700"
-                  >
-                    {{ isAllSelected('app') ? '取消全選' : '全選' }}
-                  </button>
+                  <button @click="toggleAllLanguages('app')" class="text-xs text-brand-600 hover:text-brand-700">{{ isAllSelected('app') ? '取消全選' : '全選' }}</button>
                 </div>
                 <div class="flex flex-wrap gap-2">
-                  <label 
-                    v-for="lang in appLanguages" 
-                    :key="lang.code"
-                    class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border cursor-pointer transition-colors"
-                    :class="form.languages.includes(lang.code) ? 'border-brand-500 bg-brand-50 text-brand-700' : 'border-slate-200 hover:border-slate-300'"
-                  >
-                    <input 
-                      type="checkbox" 
-                      :value="lang.code" 
-                      v-model="form.languages"
-                      class="sr-only"
-                    >
+                  <label v-for="lang in appLanguages" :key="lang.code" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border cursor-pointer transition-colors" :class="form.languages.includes(lang.code) ? 'border-brand-500 bg-brand-50 text-brand-700' : 'border-slate-200 hover:border-slate-300'">
+                    <input type="checkbox" :value="lang.code" v-model="form.languages" class="sr-only">
                     <span class="text-sm">{{ lang.name }}</span>
                   </label>
                 </div>
@@ -404,103 +239,52 @@
           </transition>
         </section>
 
-        <!-- 產生按鈕 -->
         <div class="flex justify-center">
-          <button 
-            @click="generateTicket"
-            :disabled="!canGenerate || isLoading"
-            class="px-8 py-4 bg-brand-500 text-white font-semibold rounded-xl hover:bg-brand-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-3"
-          >
-            <svg v-if="isLoading" class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
-              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
+          <button @click="generateTicket" :disabled="!canGenerate || isLoading" class="px-8 py-4 bg-brand-500 text-white font-semibold rounded-xl hover:bg-brand-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-3">
+            <svg v-if="isLoading" class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
             <span>{{ isLoading ? '產生中...' : '產生 Ticket' }}</span>
           </button>
         </div>
       </div>
 
-      <!-- Step 2: 文字辨識結果（如需翻譯） -->
       <div v-if="currentStep === 'ocr'" class="space-y-6">
         <section class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
           <div class="flex items-center justify-between mb-4">
             <h2 class="text-base font-semibold text-slate-800">請勾選需要翻譯的文案</h2>
-            <button 
-              @click="toggleAllTexts"
-              class="text-sm text-brand-600 hover:text-brand-700"
-            >
-              {{ isAllTextsSelected ? '取消全選' : '全選' }}
-            </button>
+            <button @click="toggleAllTexts" class="text-sm text-brand-600 hover:text-brand-700">{{ isAllTextsSelected ? '取消全選' : '全選' }}</button>
           </div>
-          
           <div class="space-y-2 max-h-96 overflow-y-auto">
-            <label 
-              v-for="(text, index) in detectedTexts" 
-              :key="index"
-              class="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 cursor-pointer"
-            >
-              <input 
-                type="checkbox" 
-                v-model="selectedTexts"
-                :value="text"
-                class="w-4 h-4 rounded"
-              >
+            <label v-for="(text, index) in detectedTexts" :key="index" class="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 cursor-pointer">
+              <input type="checkbox" v-model="selectedTexts" :value="text" class="w-4 h-4 rounded">
               <span class="text-sm text-slate-700">{{ text }}</span>
             </label>
           </div>
         </section>
-
         <div class="flex justify-center gap-4">
-          <button 
-            @click="currentStep = 'form'"
-            class="px-6 py-3 border border-slate-300 text-slate-700 font-medium rounded-xl hover:bg-slate-50 transition-colors"
-          >
-            返回修改
-          </button>
-          <button 
-            @click="proceedToResult"
-            :disabled="isLoading"
-            class="px-8 py-3 bg-brand-500 text-white font-semibold rounded-xl hover:bg-brand-600 disabled:opacity-50 transition-colors flex items-center gap-2"
-          >
-            <svg v-if="isLoading" class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
-              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
+          <button @click="currentStep = 'form'" class="px-6 py-3 border border-slate-300 text-slate-700 font-medium rounded-xl hover:bg-slate-50 transition-colors">返回修改</button>
+          <button @click="proceedToResult" :disabled="isLoading" class="px-8 py-3 bg-brand-500 text-white font-semibold rounded-xl hover:bg-brand-600 disabled:opacity-50 transition-colors flex items-center gap-2">
+            <svg v-if="isLoading" class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
             <span>{{ isLoading ? '產生中...' : '繼續產生' }}</span>
           </button>
         </div>
       </div>
 
-      <!-- Step 3: 結果顯示 -->
       <div v-if="currentStep === 'result'" class="space-y-6">
-        <!-- Ticket 結果 -->
         <section class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
           <div class="flex items-center justify-between mb-4">
             <h2 class="text-base font-semibold text-slate-800">Ticket 內容</h2>
-            <button 
-              @click="copyToClipboard(ticketResult)"
-              class="flex items-center gap-2 px-4 py-2 text-sm bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-colors"
-            >
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
-              </svg>
+            <button @click="copyToClipboard(ticketResult)" class="flex items-center gap-2 px-4 py-2 text-sm bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-colors">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
               複製
             </button>
           </div>
           <div class="markdown-output bg-slate-50 rounded-xl p-4 max-h-[500px] overflow-y-auto border border-slate-200">{{ ticketResult }}</div>
         </section>
-
-        <!-- 翻譯結果 -->
         <section v-if="translationResult" class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
           <div class="flex items-center justify-between mb-4">
             <h2 class="text-base font-semibold text-slate-800">i18n 翻譯表格</h2>
-            <button 
-              @click="copyToClipboard(translationResult)"
-              class="flex items-center gap-2 px-4 py-2 text-sm bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-colors"
-            >
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
-              </svg>
+            <button @click="copyToClipboard(translationResult)" class="flex items-center gap-2 px-4 py-2 text-sm bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-colors">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
               複製
             </button>
           </div>
@@ -508,19 +292,11 @@
             <div class="markdown-output bg-slate-50 rounded-xl p-4 border border-slate-200" v-html="renderMarkdownTable(translationResult)"></div>
           </div>
         </section>
-
-        <!-- 操作按鈕 -->
         <div class="flex justify-center gap-4">
-          <button 
-            @click="resetForm"
-            class="px-6 py-3 border border-slate-300 text-slate-700 font-medium rounded-xl hover:bg-slate-50 transition-colors"
-          >
-            開新的 Ticket
-          </button>
+          <button @click="resetForm" class="px-6 py-3 border border-slate-300 text-slate-700 font-medium rounded-xl hover:bg-slate-50 transition-colors">開新的 Ticket</button>
         </div>
       </div>
 
-      <!-- Loading Overlay -->
       <transition name="fade">
         <div v-if="isLoading" class="fixed inset-0 bg-slate-900/50 flex items-center justify-center z-50">
           <div class="bg-white rounded-2xl p-8 shadow-xl max-w-sm w-full mx-4 text-center">
@@ -534,68 +310,33 @@
         </div>
       </transition>
 
-      <!-- API Key Modal -->
       <transition name="fade">
         <div v-if="showApiKeyModal" class="fixed inset-0 bg-slate-900/50 flex items-center justify-center z-50" @click.self="showApiKeyModal = false">
           <div class="bg-white rounded-2xl p-6 shadow-xl max-w-md w-full mx-4">
             <h3 class="text-lg font-semibold text-slate-800 mb-4">設定 API Key</h3>
-            
             <div class="space-y-4">
               <div>
                 <label class="block text-sm font-medium text-slate-700 mb-2">Claude API Key</label>
-                <input
-                  type="password"
-                  v-model="tempApiKey"
-                  placeholder="sk-ant-..."
-                  class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent"
-                >
-                <p class="text-xs text-slate-500 mt-2">
-                  輸入自己的 API Key 可不受每日試用限制。
-                  <a href="https://console.anthropic.com/" target="_blank" class="text-brand-600 hover:underline">取得 API Key →</a>
-                </p>
+                <input type="password" v-model="tempApiKey" placeholder="sk-ant-..." class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent">
+                <p class="text-xs text-slate-500 mt-2">輸入自己的 API Key 可不受每日試用限制。<a href="https://console.anthropic.com/" target="_blank" class="text-brand-600 hover:underline">取得 API Key →</a></p>
               </div>
-
               <div class="flex gap-3">
-                <button 
-                  @click="showApiKeyModal = false"
-                  class="flex-1 px-4 py-2.5 border border-slate-300 text-slate-700 font-medium rounded-xl hover:bg-slate-50"
-                >
-                  取消
-                </button>
-                <button 
-                  @click="saveApiKey"
-                  class="flex-1 px-4 py-2.5 bg-brand-500 text-white font-medium rounded-xl hover:bg-brand-600"
-                >
-                  儲存
-                </button>
+                <button @click="showApiKeyModal = false" class="flex-1 px-4 py-2.5 border border-slate-300 text-slate-700 font-medium rounded-xl hover:bg-slate-50">取消</button>
+                <button @click="saveApiKey" class="flex-1 px-4 py-2.5 bg-brand-500 text-white font-medium rounded-xl hover:bg-brand-600">儲存</button>
               </div>
-
               <div v-if="userApiKey" class="pt-3 border-t border-slate-200">
-                <button 
-                  @click="clearApiKey"
-                  class="text-sm text-red-600 hover:text-red-700"
-                >
-                  清除已儲存的 API Key
-                </button>
+                <button @click="clearApiKey" class="text-sm text-red-600 hover:text-red-700">清除已儲存的 API Key</button>
               </div>
             </div>
           </div>
         </div>
       </transition>
 
-      <!-- Toast 通知 -->
       <transition name="slide">
         <div v-if="toast.show" class="fixed bottom-6 right-6 z-50">
-          <div 
-            class="px-4 py-3 rounded-xl shadow-lg flex items-center gap-3"
-            :class="toast.type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'"
-          >
-            <svg v-if="toast.type === 'success'" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-            </svg>
-            <svg v-else class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-            </svg>
+          <div class="px-4 py-3 rounded-xl shadow-lg flex items-center gap-3" :class="toast.type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'">
+            <svg v-if="toast.type === 'success'" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            <svg v-else class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
             <span>{{ toast.message }}</span>
           </div>
         </div>
@@ -605,41 +346,24 @@
 
   <script>
     const { createApp, ref, reactive, computed, onMounted } = Vue;
-
     createApp({
       setup() {
-        // 從 config.js 讀取設定
         const apiBaseUrl = CONFIG.API_BASE_URL;
-
-        // 語言選項
         const webLanguages = [
-          { code: 'zh-CN', name: '簡體中文' },
-          { code: 'en', name: '英文' },
-          { code: 'ja', name: '日文' },
-          { code: 'ko', name: '韓文' },
-          { code: 'fr', name: '法文' },
-          { code: 'es', name: '西班牙文' },
-          { code: 'pt-BR', name: '葡萄牙文（巴西）' },
-          { code: 'de', name: '德文' },
-          { code: 'vi', name: '越南文' },
-          { code: 'th', name: '泰文' },
-          { code: 'ro', name: '羅馬尼亞文' },
+          { code: 'zh-CN', name: '簡體中文' }, { code: 'en', name: '英文' }, { code: 'ja', name: '日文' },
+          { code: 'ko', name: '韓文' }, { code: 'fr', name: '法文' }, { code: 'es', name: '西班牙文' },
+          { code: 'pt-BR', name: '葡萄牙文（巴西）' }, { code: 'de', name: '德文' }, { code: 'vi', name: '越南文' },
+          { code: 'th', name: '泰文' }, { code: 'ro', name: '羅馬尼亞文' },
         ];
-
         const appLanguages = [
-          { code: 'zh-CN', name: '簡體中文' },
-          { code: 'en', name: '英文' },
-          { code: 'ja', name: '日文' },
-          { code: 'ko', name: '韓文' },
-          { code: 'fr', name: '法文' },
+          { code: 'zh-CN', name: '簡體中文' }, { code: 'en', name: '英文' }, { code: 'ja', name: '日文' },
+          { code: 'ko', name: '韓文' }, { code: 'fr', name: '法文' },
         ];
-
         const ticketTypes = [
           { value: 'feat', label: '功能開發', desc: '新增功能', icon: '✨' },
           { value: 'fix', label: 'Bug 修復', desc: '修復問題', icon: '🐛' },
         ];
 
-        // 狀態
         const currentStep = ref('form');
         const isLoading = ref(false);
         const loadingMessage = ref('');
@@ -648,521 +372,133 @@
         const userApiKey = ref('');
         const tempApiKey = ref('');
         const apiStatus = reactive({ available: false, remaining: 0, limit: 20 });
-
-        // 表單
+        const requireLogin = ref(false);
+        const isLoggedIn = ref(false);
+        const isLoggingIn = ref(false);
+        const authToken = ref('');
+        const loginForm = reactive({ username: '', password: '' });
         const form = reactive({
-          type: 'feat',
-          description: '',
-          scope: 'frontend',
-          priority: 'normal',
-          platform: 'web',
-          figmaUrl: '',
-          images: [],
-          needTranslation: false,
-          languages: [],
+          type: 'feat', description: '', scope: 'frontend', priority: 'normal', platform: 'web',
+          figmaUrl: '', images: [], needTranslation: false, languages: [],
         });
-
-        // 結果
         const detectedTexts = ref([]);
         const selectedTexts = ref([]);
         const ticketResult = ref('');
         const translationResult = ref('');
-
-        // Toast
         const toast = reactive({ show: false, message: '', type: 'success' });
 
-        // 計算屬性
-        const canGenerate = computed(() => {
-          const hasApiAccess = userApiKey.value || apiBaseUrl;
-          return form.description.trim().length > 0 && hasApiAccess;
-        });
+        const canUseApp = computed(() => userApiKey.value || (!requireLogin.value || isLoggedIn.value) && apiBaseUrl);
+        const canGenerate = computed(() => form.description.trim().length > 0 && canUseApp.value);
+        const isAllTextsSelected = computed(() => detectedTexts.value.length > 0 && selectedTexts.value.length === detectedTexts.value.length);
 
-        const isAllTextsSelected = computed(() => {
-          return detectedTexts.value.length > 0 && 
-                 selectedTexts.value.length === detectedTexts.value.length;
-        });
-
-        // 方法
-        const showToast = (message, type = 'success') => {
-          toast.message = message;
-          toast.type = type;
-          toast.show = true;
-          setTimeout(() => { toast.show = false; }, 3000);
-        };
-
-        const checkApiStatus = async () => {
-          if (!apiBaseUrl) return;
+        const showToast = (message, type = 'success') => { toast.message = message; toast.type = type; toast.show = true; setTimeout(() => { toast.show = false; }, 3000); };
+        const checkAuthRequired = async () => { if (!apiBaseUrl) return; try { const res = await fetch(`${apiBaseUrl}/api/auth/check`); const data = await res.json(); requireLogin.value = data.requireLogin; } catch (e) {} };
+        const checkApiStatus = async () => { if (!apiBaseUrl) return; try { const res = await fetch(`${apiBaseUrl}/api/status`); const data = await res.json(); Object.assign(apiStatus, data); } catch (e) {} };
+        
+        const login = async () => {
+          if (!loginForm.username || !loginForm.password) return;
+          isLoggingIn.value = true;
           try {
-            const res = await fetch(`${apiBaseUrl}/api/status`);
+            const res = await fetch(`${apiBaseUrl}/api/auth/login`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(loginForm) });
             const data = await res.json();
-            Object.assign(apiStatus, data);
-          } catch (e) {
-            console.log('無法取得 API 狀態');
-          }
+            if (!res.ok) throw new Error(data.error || '登入失敗');
+            authToken.value = data.token; isLoggedIn.value = true; localStorage.setItem('demo_token', data.token);
+            showToast('登入成功'); checkApiStatus();
+          } catch (e) { showToast(e.message, 'error'); } finally { isLoggingIn.value = false; }
         };
-
-        const saveApiKey = () => {
-          userApiKey.value = tempApiKey.value;
-          localStorage.setItem('claude_api_key', tempApiKey.value);
-          showApiKeyModal.value = false;
-          showToast('API Key 已儲存');
+        
+        const logout = async () => {
+          try { await fetch(`${apiBaseUrl}/api/auth/logout`, { method: 'POST', headers: { 'Authorization': `Bearer ${authToken.value}` } }); } catch (e) {}
+          authToken.value = ''; isLoggedIn.value = false; localStorage.removeItem('demo_token'); showToast('已登出');
         };
-
-        const clearApiKey = () => {
-          userApiKey.value = '';
-          tempApiKey.value = '';
-          localStorage.removeItem('claude_api_key');
-          showApiKeyModal.value = false;
-          showToast('API Key 已清除');
-        };
-
-        const handleFileSelect = (e) => {
-          const files = Array.from(e.target.files);
-          processFiles(files);
-        };
-
-        const handleDrop = (e) => {
-          isDragging.value = false;
-          const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'));
-          processFiles(files);
-        };
-
-        const processFiles = async (files) => {
-          for (const file of files) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-              form.images.push({
-                file,
-                preview: e.target.result,
-                base64: e.target.result.split(',')[1]
-              });
-            };
-            reader.readAsDataURL(file);
-          }
-        };
-
-        const removeImage = (index) => {
-          form.images.splice(index, 1);
-        };
-
-        const isAllSelected = (platform) => {
-          const langs = platform === 'web' ? webLanguages : appLanguages;
-          return langs.every(l => form.languages.includes(l.code));
-        };
-
-        const toggleAllLanguages = (platform) => {
-          const langs = platform === 'web' ? webLanguages : appLanguages;
-          if (isAllSelected(platform)) {
-            form.languages = form.languages.filter(l => !langs.map(x => x.code).includes(l));
-          } else {
-            const newLangs = langs.map(l => l.code).filter(l => !form.languages.includes(l));
-            form.languages.push(...newLangs);
-          }
-        };
-
-        const toggleAllTexts = () => {
-          if (isAllTextsSelected.value) {
-            selectedTexts.value = [];
-          } else {
-            selectedTexts.value = [...detectedTexts.value];
-          }
-        };
-
+        
+        const saveApiKey = () => { userApiKey.value = tempApiKey.value; localStorage.setItem('claude_api_key', tempApiKey.value); showApiKeyModal.value = false; showToast('API Key 已儲存'); };
+        const clearApiKey = () => { userApiKey.value = ''; tempApiKey.value = ''; localStorage.removeItem('claude_api_key'); showApiKeyModal.value = false; showToast('API Key 已清除'); };
+        const handleFileSelect = (e) => processFiles(Array.from(e.target.files));
+        const handleDrop = (e) => { isDragging.value = false; processFiles(Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'))); };
+        const processFiles = (files) => { files.forEach(file => { const reader = new FileReader(); reader.onload = (e) => form.images.push({ file, preview: e.target.result, base64: e.target.result.split(',')[1] }); reader.readAsDataURL(file); }); };
+        const removeImage = (index) => form.images.splice(index, 1);
+        const isAllSelected = (platform) => (platform === 'web' ? webLanguages : appLanguages).every(l => form.languages.includes(l.code));
+        const toggleAllLanguages = (platform) => { const langs = platform === 'web' ? webLanguages : appLanguages; if (isAllSelected(platform)) { form.languages = form.languages.filter(l => !langs.map(x => x.code).includes(l)); } else { form.languages.push(...langs.map(l => l.code).filter(l => !form.languages.includes(l))); } };
+        const toggleAllTexts = () => { selectedTexts.value = isAllTextsSelected.value ? [] : [...detectedTexts.value]; };
+        
         const callClaudeAPI = async (messages) => {
           const useProxy = !userApiKey.value && apiBaseUrl;
           const url = useProxy ? `${apiBaseUrl}/api/chat` : 'https://api.anthropic.com/v1/messages';
-          
-          const headers = {
-            'Content-Type': 'application/json',
-          };
-
-          if (!useProxy) {
-            headers['x-api-key'] = userApiKey.value;
-            headers['anthropic-version'] = '2023-06-01';
-          }
-
-          const res = await fetch(url, {
-            method: 'POST',
-            headers,
-            body: JSON.stringify({
-              model: CONFIG.CLAUDE_MODEL,
-              max_tokens: CONFIG.MAX_TOKENS,
-              messages
-            })
-          });
-
-          if (!res.ok) {
-            const err = await res.json();
-            throw new Error(err.error?.message || err.error || '呼叫 API 失敗');
-          }
-
-          const data = await res.json();
-          
-          // 更新 API 狀態
-          if (useProxy) {
-            checkApiStatus();
-          }
-
-          return data.content[0].text;
+          const headers = { 'Content-Type': 'application/json' };
+          if (useProxy) { if (authToken.value) headers['Authorization'] = `Bearer ${authToken.value}`; }
+          else { headers['x-api-key'] = userApiKey.value; headers['anthropic-version'] = '2023-06-01'; }
+          const res = await fetch(url, { method: 'POST', headers, body: JSON.stringify({ model: CONFIG.CLAUDE_MODEL, max_tokens: CONFIG.MAX_TOKENS, messages }) });
+          if (!res.ok) { const err = await res.json(); if (res.status === 401) { isLoggedIn.value = false; authToken.value = ''; localStorage.removeItem('demo_token'); } throw new Error(err.error?.message || err.error || '呼叫 API 失敗'); }
+          const data = await res.json(); if (useProxy) checkApiStatus(); return data.content[0].text;
         };
-
+        
         const generateTicket = async () => {
           if (!canGenerate.value) return;
-
           isLoading.value = true;
-
           try {
-            // 如果需要翻譯且有截圖，先辨識文字
-            if (form.needTranslation && form.images.length > 0) {
-              loadingMessage.value = '辨識截圖文字中...';
-              await detectTexts();
-              currentStep.value = 'ocr';
-              isLoading.value = false;
-              return;
-            }
-
-            // 直接產生 Ticket
+            if (form.needTranslation && form.images.length > 0) { loadingMessage.value = '辨識截圖文字中...'; await detectTexts(); currentStep.value = 'ocr'; isLoading.value = false; return; }
             await generateTicketContent();
-            
-            // 如果需要翻譯但沒截圖，跳過 OCR
-            if (form.needTranslation && selectedTexts.value.length > 0) {
-              await generateTranslation();
-            }
-
+            if (form.needTranslation && selectedTexts.value.length > 0) await generateTranslation();
             currentStep.value = 'result';
-          } catch (error) {
-            showToast(error.message, 'error');
-          } finally {
-            isLoading.value = false;
-          }
+          } catch (error) { showToast(error.message, 'error'); } finally { isLoading.value = false; }
         };
-
+        
         const detectTexts = async () => {
-          const imageContents = form.images.map(img => ({
-            type: 'image',
-            source: {
-              type: 'base64',
-              media_type: img.file.type,
-              data: img.base64
-            }
-          }));
-
-          const prompt = `# Role
-你是一個文字辨識助手，負責從截圖中提取所有 UI 上的文字內容。
-
-# Task
-1. 仔細檢視每一張截圖
-2. 提取所有可見的 UI 文字，包含：按鈕文字、標題、副標題、表單 label 和 placeholder、提示訊息、說明文字、彈窗內容、錯誤訊息、選單選項
-3. 合併所有截圖的文字
-4. 去除重複項目
-5. 過濾掉不需翻譯的內容（如：純數字、email 地址、網址、版本號）
-
-# Output Format
-直接輸出文字清單，每行一個，不要加任何前綴符號或編號：
-
-文字項目1
-文字項目2
-文字項目3
-
-# 注意事項
-- 保持原文呈現，不要翻譯或修改
-- 如果文字有明顯的前後文關係，可以合併成完整句子`;
-
-          const result = await callClaudeAPI([{
-            role: 'user',
-            content: [
-              ...imageContents,
-              { type: 'text', text: prompt }
-            ]
-          }]);
-
-          detectedTexts.value = result.split('\n')
-            .map(t => t.trim())
-            .filter(t => t.length > 0 && !t.startsWith('-') && !t.startsWith('•'));
+          const imageContents = form.images.map(img => ({ type: 'image', source: { type: 'base64', media_type: img.file.type, data: img.base64 } }));
+          const prompt = `# Role\n你是一個文字辨識助手，負責從截圖中提取所有 UI 上的文字內容。\n\n# Task\n1. 仔細檢視每一張截圖\n2. 提取所有可見的 UI 文字\n3. 合併所有截圖的文字\n4. 去除重複項目\n5. 過濾掉不需翻譯的內容（純數字、email、網址、版本號）\n\n# Output Format\n直接輸出文字清單，每行一個，不要加任何前綴符號或編號`;
+          const result = await callClaudeAPI([{ role: 'user', content: [...imageContents, { type: 'text', text: prompt }] }]);
+          detectedTexts.value = result.split('\n').map(t => t.trim()).filter(t => t.length > 0 && !t.startsWith('-') && !t.startsWith('•'));
           selectedTexts.value = [...detectedTexts.value];
         };
-
+        
         const proceedToResult = async () => {
           isLoading.value = true;
-
           try {
-            loadingMessage.value = '產生 Ticket 內容中...';
-            await generateTicketContent();
-
-            if (form.needTranslation && selectedTexts.value.length > 0) {
-              loadingMessage.value = '產生翻譯表格中...';
-              await generateTranslation();
-            }
-
+            loadingMessage.value = '產生 Ticket 內容中...'; await generateTicketContent();
+            if (form.needTranslation && selectedTexts.value.length > 0) { loadingMessage.value = '產生翻譯表格中...'; await generateTranslation(); }
             currentStep.value = 'result';
-          } catch (error) {
-            showToast(error.message, 'error');
-          } finally {
-            isLoading.value = false;
-          }
+          } catch (error) { showToast(error.message, 'error'); } finally { isLoading.value = false; }
         };
-
+        
         const generateTicketContent = async () => {
           loadingMessage.value = '產生 Ticket 內容中...';
-
           const scopeMap = { frontend: '前端', backend: '後端', fullstack: '全端' };
           const priorityMap = { urgent: '緊急', normal: '一般', low: '低' };
           const platformMap = { web: 'Web', app: 'App', both: '兩者皆是' };
-
-          const imageContents = form.images.map(img => ({
-            type: 'image',
-            source: {
-              type: 'base64',
-              media_type: img.file.type,
-              data: img.base64
-            }
-          }));
-
-          const prompt = `# Role
-你是一個專業的 PM 助手，專門協助撰寫開發 ticket。你會產出結構清晰、描述具體的 ticket 內容，讓工程師能明確理解需要實作的項目。
-
-# Input
-- 問題/功能描述：${form.description}
-- Ticket 類型：${form.type}
-- 影響範圍：${scopeMap[form.scope]}
-- 優先級：${priorityMap[form.priority]}
-- 平台：${platformMap[form.platform]}
-- Figma 連結：${form.figmaUrl || '無'}
-
-# Output Format
-
-${form.type === 'feat' ? `## 模板：功能開發 (feat)
-
-### 1. Ticket 標題
-格式：[feat] {頁面名稱}_{功能簡述}
-
-### 2. 需求描述
-使用巢狀 checkbox 格式，每個主項目下列出具體的子任務。
-
-規則：
-- 主項目描述一個功能區塊或流程
-- 子項目要具體到可執行的程度，包含：
-  - API endpoint 和參數（如適用）
-  - 元件行為細節
-  - 狀態處理（loading、error、success）
-  - 邊界條件
-- 如果涉及 webview，註明需要的 bridge 或 link 格式
-- 如果涉及跳轉，註明來源頁和目標頁
-
-格式範例：
-- [ ] 01 主要功能描述
-  - [ ] 具體實作項目 A
-  - [ ] 具體實作項目 B，包含參數說明
-- [ ] 02 第二個功能區塊
-  - [ ] 子項目
-
-### 3. 驗收條件 / 測試要點
-列出 QA 或工程師需要驗證的情境，使用 checkbox 格式
-
-### 4. 參考畫面
-[截圖放置處]
-
-### 5. Figma 連結
-${form.figmaUrl || '[無]'}
-
-### 6. 建議 Due Day
-根據以下規則估算：
-- 緊急：1-2 天
-- 一般：依複雜度 3-7 天
-- 低：1-2 週
-
-### 7. 建議 Tag
-根據內容建議 2-4 個 tag` : `## 模板：Bug 修復 (fix)
-
-### 1. Ticket 標題
-格式：[fix] {頁面名稱}_{問題簡述}
-
-### 2. 問題描述
-簡潔說明目前遇到的問題現象。
-
-### 3. 復現方式
-以編號步驟列出如何重現此 bug
-
-### 4. 測試帳號
-> ⚠️ 請補充測試帳號資訊
-> - 帳號：
-> - 密碼：
-
-### 5. 預期結果
-使用 checkbox 格式列出修復後應該達成的行為
-
-### 6. 問題截圖 / 錄影
-[截圖放置處]
-
-### 7. 建議 Due Day
-根據以下規則估算：
-- 緊急：1-2 天
-- 一般：依複雜度 3-5 天
-- 低：1 週
-
-### 8. 建議 Tag
-根據內容建議 2-4 個 tag
-嚴重程度標籤規則：
-- critical：系統無法使用、資料遺失、安全性問題
-- major：主要功能異常、影響多數使用者
-- minor：次要功能異常、有 workaround、UI 顯示問題`}
-
-# 注意事項
-- 使用繁體中文
-- 技術名詞可使用英文（API、endpoint、webview 等）
-- 保持描述簡潔但完整
-- 仔細觀察截圖內容來補充細節
-- 如果資訊不足以產出完整內容，在該欄位標註 [需補充] 並說明需要什麼資訊`;
-
-          const content = [
-            { type: 'text', text: prompt },
-            ...imageContents
-          ];
-
-          ticketResult.value = await callClaudeAPI([{
-            role: 'user',
-            content
-          }]);
+          const imageContents = form.images.map(img => ({ type: 'image', source: { type: 'base64', media_type: img.file.type, data: img.base64 } }));
+          const template = form.type === 'feat' ? `### 1. Ticket 標題\n格式：[feat] {頁面名稱}_{功能簡述}\n\n### 2. 需求描述\n使用巢狀 checkbox 格式\n\n### 3. 驗收條件 / 測試要點\n\n### 4. 參考畫面\n[截圖放置處]\n\n### 5. Figma 連結\n${form.figmaUrl || '[無]'}\n\n### 6. 建議 Due Day\n\n### 7. 建議 Tag` : `### 1. Ticket 標題\n格式：[fix] {頁面名稱}_{問題簡述}\n\n### 2. 問題描述\n\n### 3. 復現方式\n\n### 4. 測試帳號\n> ⚠️ 請補充測試帳號資訊\n\n### 5. 預期結果\n\n### 6. 問題截圖 / 錄影\n[截圖放置處]\n\n### 7. 建議 Due Day\n\n### 8. 建議 Tag`;
+          const prompt = `# Role\n你是一個專業的 PM 助手，專門協助撰寫開發 ticket。\n\n# Input\n- 問題/功能描述：${form.description}\n- Ticket 類型：${form.type}\n- 影響範圍：${scopeMap[form.scope]}\n- 優先級：${priorityMap[form.priority]}\n- 平台：${platformMap[form.platform]}\n- Figma 連結：${form.figmaUrl || '無'}\n\n# Output Format\n${template}\n\n# 注意事項\n- 使用繁體中文\n- 技術名詞可使用英文\n- 保持描述簡潔但完整\n- 仔細觀察截圖內容來補充細節\n- 如果資訊不足，標註 [需補充]`;
+          ticketResult.value = await callClaudeAPI([{ role: 'user', content: [{ type: 'text', text: prompt }, ...imageContents] }]);
         };
-
+        
         const generateTranslation = async () => {
           const allLangs = form.platform === 'app' ? appLanguages : webLanguages;
           const selectedLangs = allLangs.filter(l => form.languages.includes(l.code));
           const langNames = selectedLangs.map(l => l.name).join('、');
-
-          const prompt = `# Role
-你是一個專業的多語系翻譯助手，負責將 UI 文案翻譯成指定的語言。
-
-# Input
-需翻譯的文案：
-${selectedTexts.value.map(t => `- ${t}`).join('\n')}
-
-目標語言：${langNames}
-
-# Output Format
-以 Markdown 表格格式輸出，第一欄為原文，後續各欄為對應語言的翻譯：
-
-| 原文 | ${selectedLangs.map(l => l.name).join(' | ')} |
-|------|${'------|'.repeat(selectedLangs.length)}
-| 文案 | ${'翻譯 | '.repeat(selectedLangs.length - 1)}翻譯 |
-
-# 翻譯原則
-1. 保持一致性：相同概念使用相同翻譯
-2. 符合平台慣例：按鈕文字簡潔有力，參考各語系主流 App 的用語習慣
-3. 長度考量：翻譯後的文字長度盡量不要比原文長太多
-4. 語氣一致：保持與原文相同的正式/非正式程度
-5. 特殊處理：品牌名稱不翻譯，日文使用適當的敬體
-
-# 注意事項
-- 如果文案含有變數（如 {name}），保留變數格式不翻譯
-- 直接輸出表格，不要加額外說明`;
-
-          translationResult.value = await callClaudeAPI([{
-            role: 'user',
-            content: prompt
-          }]);
+          const prompt = `# Role\n你是一個專業的多語系翻譯助手。\n\n# Input\n需翻譯的文案：\n${selectedTexts.value.map(t => `- ${t}`).join('\n')}\n\n目標語言：${langNames}\n\n# Output Format\n以 Markdown 表格格式輸出\n\n# 翻譯原則\n1. 保持一致性\n2. 符合平台慣例\n3. 長度考量\n4. 語氣一致\n5. 品牌名稱不翻譯`;
+          translationResult.value = await callClaudeAPI([{ role: 'user', content: prompt }]);
         };
-
+        
         const renderMarkdownTable = (md) => {
           if (!md) return '';
-          
           const lines = md.trim().split('\n').filter(l => l.includes('|'));
           if (lines.length < 2) return md;
-
           let html = '<table class="min-w-full">';
-          
-          lines.forEach((line, i) => {
-            if (line.includes('---')) return;
-            
-            const cells = line.split('|').filter(c => c.trim());
-            const tag = i === 0 ? 'th' : 'td';
-            
-            html += '<tr>';
-            cells.forEach(cell => {
-              html += `<${tag} class="whitespace-nowrap">${cell.trim()}</${tag}>`;
-            });
-            html += '</tr>';
-          });
-
-          html += '</table>';
-          return html;
+          lines.forEach((line, i) => { if (line.includes('---')) return; const cells = line.split('|').filter(c => c.trim()); const tag = i === 0 ? 'th' : 'td'; html += '<tr>'; cells.forEach(cell => { html += `<${tag} class="whitespace-nowrap">${cell.trim()}</${tag}>`; }); html += '</tr>'; });
+          html += '</table>'; return html;
         };
+        
+        const copyToClipboard = async (text) => { try { await navigator.clipboard.writeText(text); showToast('已複製到剪貼簿'); } catch (e) { showToast('複製失敗', 'error'); } };
+        const resetForm = () => { Object.assign(form, { type: 'feat', description: '', scope: 'frontend', priority: 'normal', platform: 'web', figmaUrl: '', images: [], needTranslation: false, languages: [] }); detectedTexts.value = []; selectedTexts.value = []; ticketResult.value = ''; translationResult.value = ''; currentStep.value = 'form'; };
 
-        const copyToClipboard = async (text) => {
-          try {
-            await navigator.clipboard.writeText(text);
-            showToast('已複製到剪貼簿');
-          } catch (e) {
-            showToast('複製失敗', 'error');
-          }
-        };
-
-        const resetForm = () => {
-          form.type = 'feat';
-          form.description = '';
-          form.scope = 'frontend';
-          form.priority = 'normal';
-          form.platform = 'web';
-          form.figmaUrl = '';
-          form.images = [];
-          form.needTranslation = false;
-          form.languages = [];
-          detectedTexts.value = [];
-          selectedTexts.value = [];
-          ticketResult.value = '';
-          translationResult.value = '';
-          currentStep.value = 'form';
-        };
-
-        // 初始化
-        onMounted(() => {
-          const savedKey = localStorage.getItem('claude_api_key');
-          if (savedKey) {
-            userApiKey.value = savedKey;
-            tempApiKey.value = savedKey;
-          }
-          checkApiStatus();
+        onMounted(async () => {
+          const savedKey = localStorage.getItem('claude_api_key'); if (savedKey) { userApiKey.value = savedKey; tempApiKey.value = savedKey; }
+          const savedToken = localStorage.getItem('demo_token'); if (savedToken) { authToken.value = savedToken; isLoggedIn.value = true; }
+          await checkAuthRequired(); checkApiStatus();
         });
 
-        return {
-          // 常數
-          apiBaseUrl,
-          webLanguages,
-          appLanguages,
-          ticketTypes,
-          // 狀態
-          currentStep,
-          isLoading,
-          loadingMessage,
-          isDragging,
-          showApiKeyModal,
-          userApiKey,
-          tempApiKey,
-          apiStatus,
-          form,
-          detectedTexts,
-          selectedTexts,
-          ticketResult,
-          translationResult,
-          toast,
-          // 計算
-          canGenerate,
-          isAllTextsSelected,
-          // 方法
-          saveApiKey,
-          clearApiKey,
-          handleFileSelect,
-          handleDrop,
-          removeImage,
-          isAllSelected,
-          toggleAllLanguages,
-          toggleAllTexts,
-          generateTicket,
-          proceedToResult,
-          renderMarkdownTable,
-          copyToClipboard,
-          resetForm,
-        };
+        return { apiBaseUrl, webLanguages, appLanguages, ticketTypes, currentStep, isLoading, loadingMessage, isDragging, showApiKeyModal, userApiKey, tempApiKey, apiStatus, requireLogin, isLoggedIn, isLoggingIn, loginForm, form, detectedTexts, selectedTexts, ticketResult, translationResult, toast, canUseApp, canGenerate, isAllTextsSelected, login, logout, saveApiKey, clearApiKey, handleFileSelect, handleDrop, removeImage, isAllSelected, toggleAllLanguages, toggleAllTexts, generateTicket, proceedToResult, renderMarkdownTable, copyToClipboard, resetForm };
       }
     }).mount('#app');
   </script>
