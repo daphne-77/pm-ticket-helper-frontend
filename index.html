@@ -322,7 +322,10 @@
               </div>
               <div class="flex gap-3">
                 <button @click="showApiKeyModal = false" class="flex-1 px-4 py-2.5 border border-slate-300 text-slate-700 font-medium rounded-xl hover:bg-slate-50">取消</button>
-                <button @click="saveApiKey" class="flex-1 px-4 py-2.5 bg-brand-500 text-white font-medium rounded-xl hover:bg-brand-600">儲存</button>
+                <button @click="saveApiKey" :disabled="isValidatingKey" class="flex-1 px-4 py-2.5 bg-brand-500 text-white font-medium rounded-xl hover:bg-brand-600 disabled:opacity-50 flex items-center justify-center gap-2">
+                  <svg v-if="isValidatingKey" class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                  {{ isValidatingKey ? '驗證中...' : '儲存' }}
+                </button>
               </div>
               <div v-if="userApiKey" class="pt-3 border-t border-slate-200">
                 <button @click="clearApiKey" class="text-sm text-red-600 hover:text-red-700">清除已儲存的 API Key</button>
@@ -375,6 +378,7 @@
         const requireLogin = ref(false);
         const isLoggedIn = ref(false);
         const isLoggingIn = ref(false);
+        const isValidatingKey = ref(false);
         const authToken = ref('');
         const loginForm = reactive({ username: '', password: '' });
         const form = reactive({
@@ -414,7 +418,23 @@
           showToast('已登出');
         };
         
-        const saveApiKey = () => { userApiKey.value = tempApiKey.value; localStorage.setItem('claude_api_key', tempApiKey.value); showApiKeyModal.value = false; showToast('API Key 已儲存'); };
+        const saveApiKey = async () => {
+          if (!tempApiKey.value.trim()) { showToast('請輸入 API Key', 'error'); return; }
+          isValidatingKey.value = true;
+          try {
+            const res = await fetch('https://api.anthropic.com/v1/messages', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'x-api-key': tempApiKey.value, 'anthropic-version': '2023-06-01' },
+              body: JSON.stringify({ model: CONFIG.CLAUDE_MODEL, max_tokens: 10, messages: [{ role: 'user', content: 'Hi' }] })
+            });
+            if (!res.ok) {
+              const err = await res.json();
+              throw new Error(err.error?.message || 'API Key 無效');
+            }
+            userApiKey.value = tempApiKey.value; localStorage.setItem('claude_api_key', tempApiKey.value); showApiKeyModal.value = false; showToast('API Key 驗證成功，已儲存');
+          } catch (e) { showToast(e.message || 'API Key 驗證失敗', 'error'); }
+          finally { isValidatingKey.value = false; }
+        };
         const clearApiKey = () => { userApiKey.value = ''; tempApiKey.value = ''; localStorage.removeItem('claude_api_key'); showApiKeyModal.value = false; showToast('API Key 已清除'); };
         const handleFileSelect = (e) => processFiles(Array.from(e.target.files));
         const handleDrop = (e) => { isDragging.value = false; processFiles(Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'))); };
@@ -500,7 +520,7 @@
           await checkAuthRequired(); checkApiStatus();
         });
 
-        return { apiBaseUrl, webLanguages, appLanguages, ticketTypes, currentStep, isLoading, loadingMessage, isDragging, showApiKeyModal, userApiKey, tempApiKey, apiStatus, requireLogin, isLoggedIn, isLoggingIn, loginForm, form, detectedTexts, selectedTexts, ticketResult, translationResult, toast, canUseApp, canGenerate, isAllTextsSelected, login, logout, saveApiKey, clearApiKey, handleFileSelect, handleDrop, removeImage, isAllSelected, toggleAllLanguages, toggleAllTexts, generateTicket, proceedToResult, renderMarkdownTable, copyToClipboard, resetForm };
+        return { apiBaseUrl, webLanguages, appLanguages, ticketTypes, currentStep, isLoading, loadingMessage, isDragging, showApiKeyModal, userApiKey, tempApiKey, apiStatus, requireLogin, isLoggedIn, isLoggingIn, isValidatingKey, loginForm, form, detectedTexts, selectedTexts, ticketResult, translationResult, toast, canUseApp, canGenerate, isAllTextsSelected, login, logout, saveApiKey, clearApiKey, handleFileSelect, handleDrop, removeImage, isAllSelected, toggleAllLanguages, toggleAllTexts, generateTicket, proceedToResult, renderMarkdownTable, copyToClipboard, resetForm };
       }
     }).mount('#app');
   </script>
