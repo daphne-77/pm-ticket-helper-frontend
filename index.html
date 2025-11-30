@@ -422,14 +422,14 @@
           if (!tempApiKey.value.trim()) { showToast('請輸入 API Key', 'error'); return; }
           isValidatingKey.value = true;
           try {
-            const res = await fetch('https://api.anthropic.com/v1/messages', {
+            const res = await fetch(`${apiBaseUrl}/api/verify-key`, {
               method: 'POST',
-              headers: { 'Content-Type': 'application/json', 'x-api-key': tempApiKey.value, 'anthropic-version': '2023-06-01' },
-              body: JSON.stringify({ model: CONFIG.CLAUDE_MODEL, max_tokens: 10, messages: [{ role: 'user', content: 'Hi' }] })
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ apiKey: tempApiKey.value })
             });
             if (!res.ok) {
               const err = await res.json();
-              throw new Error(err.error?.message || 'API Key 無效');
+              throw new Error(err.error || 'API Key 無效');
             }
             userApiKey.value = tempApiKey.value; localStorage.setItem('claude_api_key', tempApiKey.value); showApiKeyModal.value = false; showToast('API Key 驗證成功，已儲存');
           } catch (e) { showToast(e.message || 'API Key 驗證失敗', 'error'); }
@@ -445,14 +445,22 @@
         const toggleAllTexts = () => { selectedTexts.value = isAllTextsSelected.value ? [] : [...detectedTexts.value]; };
         
         const callClaudeAPI = async (messages) => {
-          const useProxy = !userApiKey.value && apiBaseUrl;
-          const url = useProxy ? `${apiBaseUrl}/api/chat` : 'https://api.anthropic.com/v1/messages';
+          const useOwnKey = !!userApiKey.value;
+          const url = useOwnKey ? `${apiBaseUrl}/api/chat-with-key` : `${apiBaseUrl}/api/chat`;
           const headers = { 'Content-Type': 'application/json' };
-          if (useProxy) { if (authToken.value) headers['Authorization'] = `Bearer ${authToken.value}`; }
-          else { headers['x-api-key'] = userApiKey.value; headers['anthropic-version'] = '2023-06-01'; }
-          const res = await fetch(url, { method: 'POST', headers, body: JSON.stringify({ model: CONFIG.CLAUDE_MODEL, max_tokens: CONFIG.MAX_TOKENS, messages }) });
+          
+          if (!useOwnKey && authToken.value) {
+            headers['Authorization'] = `Bearer ${authToken.value}`;
+          }
+          
+          const body = { model: CONFIG.CLAUDE_MODEL, max_tokens: CONFIG.MAX_TOKENS, messages };
+          if (useOwnKey) {
+            body.apiKey = userApiKey.value;
+          }
+
+          const res = await fetch(url, { method: 'POST', headers, body: JSON.stringify(body) });
           if (!res.ok) { const err = await res.json(); if (res.status === 401) { isLoggedIn.value = false; authToken.value = ''; localStorage.removeItem('demo_token'); } throw new Error(err.error?.message || err.error || '呼叫 API 失敗'); }
-          const data = await res.json(); if (useProxy) checkApiStatus(); return data.content[0].text;
+          const data = await res.json(); if (!useOwnKey) checkApiStatus(); return data.content[0].text;
         };
         
         const generateTicket = async () => {
