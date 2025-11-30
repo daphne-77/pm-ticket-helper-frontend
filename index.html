@@ -4,13 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PM 開票小幫手</title>
-  <link rel="icon" type="image/png" href="favicon.png">
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="config.js"></script>
+  <link rel="icon" type="image/png" href="./favicon.png">
+  <link rel="apple-touch-icon" href="./favicon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="./favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
   <script>
     tailwind.config = {
       theme: {
@@ -38,16 +42,53 @@
     }
   </script>
   <style>
-    [v-cloak] { display: none; }
-    .fade-enter-active, .fade-leave-active { transition: opacity 0.3s ease; }
-    .fade-enter-from, .fade-leave-to { opacity: 0; }
-    .slide-enter-active, .slide-leave-active { transition: all 0.3s ease; }
-    .slide-enter-from, .slide-leave-to { opacity: 0; transform: translateY(-10px); }
-    ::-webkit-scrollbar { width: 8px; height: 8px; }
-    ::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
-    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-    input[type="checkbox"] { accent-color: #0c8ee7; }
+    [v-cloak] {
+      display: none;
+    }
+
+    .fade-enter-active,
+    .fade-leave-active {
+      transition: opacity 0.3s ease;
+    }
+
+    .fade-enter-from,
+    .fade-leave-to {
+      opacity: 0;
+    }
+
+    .slide-enter-active,
+    .slide-leave-active {
+      transition: all 0.3s ease;
+    }
+
+    .slide-enter-from,
+    .slide-leave-to {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+
+    input[type="checkbox"] {
+      accent-color: #0c8ee7;
+    }
 
     select {
       appearance: none;
@@ -56,15 +97,48 @@
       background-position: right 12px center;
       background-size: 16px;
     }
-    .markdown-output { font-family: 'JetBrains Mono', monospace; font-size: 0.875rem; line-height: 1.6; white-space: pre-wrap; word-break: break-word; }
-    .markdown-output table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
-    .markdown-output th, .markdown-output td { border: 1px solid #e2e8f0; padding: 0.5rem; text-align: left; }
-    .markdown-output th { background: #f8fafc; font-weight: 600; }
-    .image-preview { position: relative; overflow: hidden; }
-    .image-preview img { transition: transform 0.2s ease; }
-    .image-preview:hover img { transform: scale(1.05); }
+
+    .markdown-output {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.875rem;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .markdown-output table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 1rem 0;
+    }
+
+    .markdown-output th,
+    .markdown-output td {
+      border: 1px solid #e2e8f0;
+      padding: 0.5rem;
+      text-align: left;
+    }
+
+    .markdown-output th {
+      background: #f8fafc;
+      font-weight: 600;
+    }
+
+    .image-preview {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .image-preview img {
+      transition: transform 0.2s ease;
+    }
+
+    .image-preview:hover img {
+      transform: scale(1.05);
+    }
   </style>
 </head>
+
 <body class="bg-slate-50 min-h-screen font-sans">
   <div id="app" v-cloak>
     <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
@@ -72,7 +146,8 @@
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 bg-brand-500 rounded-xl flex items-center justify-center">
             <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
             </svg>
           </div>
           <div>
@@ -84,15 +159,20 @@
           <div v-if="isLoggedIn && apiStatus.available" class="text-xs text-slate-500">
             試用剩餘: <span class="font-semibold text-brand-600">{{ apiStatus.remaining }}</span> / {{ apiStatus.limit }} 次
           </div>
-          <button v-if="isLoggedIn" @click="logout" class="flex items-center gap-2 px-3 py-2 text-sm rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors">
+          <button v-if="isLoggedIn" @click="logout"
+            class="flex items-center gap-2 px-3 py-2 text-sm rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
             </svg>
             登出試用
           </button>
-          <button @click="showApiKeyModal = true" class="flex items-center gap-2 px-3 py-2 text-sm rounded-lg transition-colors" :class="userApiKey ? 'bg-green-50 text-green-700' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'">
+          <button @click="showApiKeyModal = true"
+            class="flex items-center gap-2 px-3 py-2 text-sm rounded-lg transition-colors"
+            :class="userApiKey ? 'bg-green-50 text-green-700' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
             </svg>
             {{ userApiKey ? '已設定 API Key' : '設定 API Key' }}
           </button>
@@ -104,7 +184,8 @@
       <div v-if="!apiBaseUrl && !userApiKey" class="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-xl">
         <div class="flex items-start gap-3">
           <svg class="w-5 h-5 text-amber-500 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
           </svg>
           <div>
             <p class="text-sm font-medium text-amber-800">尚未設定後端 API</p>
@@ -113,19 +194,27 @@
         </div>
       </div>
 
-      <div v-if="apiBaseUrl && requireLogin && !isLoggedIn && !userApiKey" class="mb-6 p-6 bg-white border border-slate-200 rounded-2xl shadow-sm">
+      <div v-if="apiBaseUrl && requireLogin && !isLoggedIn && !userApiKey"
+        class="mb-6 p-6 bg-white border border-slate-200 rounded-2xl shadow-sm">
         <div class="text-center">
           <div class="w-16 h-16 bg-brand-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <svg class="w-8 h-8 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
             </svg>
           </div>
           <h2 class="text-lg font-semibold text-slate-800 mb-2">請登入使用試用模式</h2>
           <p class="text-sm text-slate-500 mb-6">或點擊右上角輸入自己的 API Key</p>
           <form @submit.prevent="login" class="max-w-xs mx-auto space-y-4" autocomplete="off">
-            <input type="text" v-model="loginForm.username" placeholder="帳號" autocomplete="off" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent" required>
-            <input type="password" v-model="loginForm.password" placeholder="密碼" autocomplete="new-password" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent" required>
-            <button type="submit" :disabled="isLoggingIn" class="w-full px-4 py-3 bg-brand-500 text-white font-semibold rounded-xl hover:bg-brand-600 disabled:opacity-50 transition-colors">{{ isLoggingIn ? '登入中...' : '登入' }}</button>
+            <input type="text" v-model="loginForm.username" placeholder="帳號" autocomplete="off"
+              class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+              required>
+            <input type="password" v-model="loginForm.password" placeholder="密碼" autocomplete="new-password"
+              class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+              required>
+            <button type="submit" :disabled="isLoggingIn"
+              class="w-full px-4 py-3 bg-brand-500 text-white font-semibold rounded-xl hover:bg-brand-600 disabled:opacity-50 transition-colors">{{
+              isLoggingIn ? '登入中...' : '登入' }}</button>
           </form>
         </div>
       </div>
@@ -136,7 +225,8 @@
           <div class="flex gap-3">
             <label v-for="type in ticketTypes" :key="type.value" class="flex-1 relative cursor-pointer">
               <input type="radio" :value="type.value" v-model="form.type" class="peer sr-only">
-              <div class="p-4 rounded-xl border-2 transition-all peer-checked:border-brand-500 peer-checked:bg-brand-50 border-slate-200 hover:border-slate-300">
+              <div
+                class="p-4 rounded-xl border-2 transition-all peer-checked:border-brand-500 peer-checked:bg-brand-50 border-slate-200 hover:border-slate-300">
                 <div class="flex items-center gap-3">
                   <span class="text-2xl">{{ type.icon }}</span>
                   <div>
@@ -153,13 +243,17 @@
           <h2 class="text-base font-semibold text-slate-800 mb-4">基本資訊</h2>
           <div class="space-y-4">
             <div>
-              <label class="block text-sm font-medium text-slate-700 mb-2">{{ form.type === 'feat' ? '功能描述' : '問題描述' }} <span class="text-red-500">*</span></label>
-              <textarea v-model="form.description" :placeholder="form.type === 'feat' ? '請描述要實作的功能...' : '請描述遇到的問題...'" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent resize-none" rows="4"></textarea>
+              <label class="block text-sm font-medium text-slate-700 mb-2">{{ form.type === 'feat' ? '功能描述' : '問題描述' }}
+                <span class="text-red-500">*</span></label>
+              <textarea v-model="form.description" :placeholder="form.type === 'feat' ? '請描述要實作的功能...' : '請描述遇到的問題...'"
+                class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent resize-none"
+                rows="4"></textarea>
             </div>
             <div class="grid grid-cols-3 gap-4">
               <div>
                 <label class="block text-sm font-medium text-slate-700 mb-2">影響範圍</label>
-                <select v-model="form.scope" class="w-full px-4 py-3 pr-10 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 bg-white">
+                <select v-model="form.scope"
+                  class="w-full px-4 py-3 pr-10 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 bg-white">
                   <option value="frontend">前端</option>
                   <option value="backend">後端</option>
                   <option value="fullstack">全端</option>
@@ -167,7 +261,8 @@
               </div>
               <div>
                 <label class="block text-sm font-medium text-slate-700 mb-2">優先級</label>
-                <select v-model="form.priority" class="w-full px-4 py-3 pr-10 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 bg-white">
+                <select v-model="form.priority"
+                  class="w-full px-4 py-3 pr-10 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 bg-white">
                   <option value="urgent">緊急</option>
                   <option value="normal">一般</option>
                   <option value="low">低</option>
@@ -175,7 +270,8 @@
               </div>
               <div>
                 <label class="block text-sm font-medium text-slate-700 mb-2">平台</label>
-                <select v-model="form.platform" class="w-full px-4 py-3 pr-10 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 bg-white">
+                <select v-model="form.platform"
+                  class="w-full px-4 py-3 pr-10 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 bg-white">
                   <option value="web">Web</option>
                   <option value="app">App</option>
                   <option value="both">兩者皆是</option>
@@ -184,19 +280,24 @@
             </div>
             <div>
               <label class="block text-sm font-medium text-slate-700 mb-2">Figma 連結</label>
-              <input type="url" v-model="form.figmaUrl" placeholder="https://www.figma.com/design/..." class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500">
+              <input type="url" v-model="form.figmaUrl" placeholder="https://www.figma.com/design/..."
+                class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500">
             </div>
             <div v-if="form.type === 'fix'" class="p-4 bg-slate-50 border border-slate-200 rounded-xl">
               <div class="flex items-start gap-3">
-                <svg class="w-5 h-5 text-slate-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                <svg class="w-5 h-5 text-slate-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor"
+                  viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
                 <div class="flex-1">
                   <p class="text-sm font-medium text-slate-700 mb-2">測試帳號（選填）</p>
                   <p class="text-xs text-slate-500 mb-3">提供測試帳號可協助工程師重現問題</p>
                   <div class="grid grid-cols-2 gap-3">
-                    <input type="text" v-model="form.testAccount" placeholder="帳號" class="px-3 py-2 text-sm border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent bg-white">
-                    <input type="text" v-model="form.testPassword" placeholder="密碼" class="px-3 py-2 text-sm border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent bg-white">
+                    <input type="text" v-model="form.testAccount" placeholder="帳號"
+                      class="px-3 py-2 text-sm border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent bg-white">
+                    <input type="text" v-model="form.testPassword" placeholder="密碼"
+                      class="px-3 py-2 text-sm border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent bg-white">
                   </div>
                 </div>
               </div>
@@ -206,19 +307,27 @@
 
         <section class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
           <h2 class="text-base font-semibold text-slate-800 mb-4">截圖上傳</h2>
-          <div @dragover.prevent="isDragging = true" @dragleave.prevent="isDragging = false" @drop.prevent="handleDrop" @click="$refs.fileInput.click()" class="border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-colors" :class="isDragging ? 'border-brand-500 bg-brand-50' : 'border-slate-300 hover:border-brand-400'">
+          <div @dragover.prevent="isDragging = true" @dragleave.prevent="isDragging = false" @drop.prevent="handleDrop"
+            @click="$refs.fileInput.click()"
+            class="border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-colors"
+            :class="isDragging ? 'border-brand-500 bg-brand-50' : 'border-slate-300 hover:border-brand-400'">
             <input ref="fileInput" type="file" accept="image/*" multiple class="hidden" @change="handleFileSelect">
             <svg class="w-12 h-12 mx-auto text-slate-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
             </svg>
             <p class="text-slate-600 mb-1">拖曳圖片至此處，或點擊上傳</p>
             <p class="text-xs text-slate-400">支援 PNG、JPG、GIF，可上傳多張</p>
           </div>
           <div v-if="form.images.length > 0" class="mt-4 grid grid-cols-4 gap-3">
-            <div v-for="(img, index) in form.images" :key="index" class="image-preview relative aspect-video bg-slate-100 rounded-lg overflow-hidden group">
+            <div v-for="(img, index) in form.images" :key="index"
+              class="image-preview relative aspect-video bg-slate-100 rounded-lg overflow-hidden group">
               <img :src="img.preview" class="w-full h-full object-cover">
-              <button @click="removeImage(index)" class="absolute top-2 right-2 w-6 h-6 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+              <button @click="removeImage(index)"
+                class="absolute top-2 right-2 w-6 h-6 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
               </button>
             </div>
           </div>
@@ -229,7 +338,9 @@
             <h2 class="text-base font-semibold text-slate-800">翻譯設定</h2>
             <label class="relative inline-flex items-center cursor-pointer">
               <input type="checkbox" v-model="form.needTranslation" class="sr-only peer">
-              <div class="w-11 h-6 bg-slate-200 peer-focus:ring-2 peer-focus:ring-brand-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-500"></div>
+              <div
+                class="w-11 h-6 bg-slate-200 peer-focus:ring-2 peer-focus:ring-brand-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-500">
+              </div>
             </label>
           </div>
           <transition name="slide">
@@ -238,10 +349,13 @@
               <div v-if="form.platform === 'web' || form.platform === 'both'" class="space-y-2">
                 <div class="flex items-center justify-between">
                   <span class="text-sm font-medium text-slate-700">Web 語言</span>
-                  <button @click="toggleAllLanguages('web')" class="text-xs text-brand-600 hover:text-brand-700">{{ isAllSelected('web') ? '取消全選' : '全選' }}</button>
+                  <button @click="toggleAllLanguages('web')" class="text-xs text-brand-600 hover:text-brand-700">{{
+                    isAllSelected('web') ? '取消全選' : '全選' }}</button>
                 </div>
                 <div class="flex flex-wrap gap-2">
-                  <label v-for="lang in webLanguages" :key="lang.code" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border cursor-pointer transition-colors" :class="form.languages.includes(lang.code) ? 'border-brand-500 bg-brand-50 text-brand-700' : 'border-slate-200 hover:border-slate-300'">
+                  <label v-for="lang in webLanguages" :key="lang.code"
+                    class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border cursor-pointer transition-colors"
+                    :class="form.languages.includes(lang.code) ? 'border-brand-500 bg-brand-50 text-brand-700' : 'border-slate-200 hover:border-slate-300'">
                     <input type="checkbox" :value="lang.code" v-model="form.languages" class="sr-only">
                     <span class="text-sm">{{ lang.name }}</span>
                   </label>
@@ -250,10 +364,13 @@
               <div v-if="form.platform === 'app'" class="space-y-2">
                 <div class="flex items-center justify-between">
                   <span class="text-sm font-medium text-slate-700">App 語言</span>
-                  <button @click="toggleAllLanguages('app')" class="text-xs text-brand-600 hover:text-brand-700">{{ isAllSelected('app') ? '取消全選' : '全選' }}</button>
+                  <button @click="toggleAllLanguages('app')" class="text-xs text-brand-600 hover:text-brand-700">{{
+                    isAllSelected('app') ? '取消全選' : '全選' }}</button>
                 </div>
                 <div class="flex flex-wrap gap-2">
-                  <label v-for="lang in appLanguages" :key="lang.code" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border cursor-pointer transition-colors" :class="form.languages.includes(lang.code) ? 'border-brand-500 bg-brand-50 text-brand-700' : 'border-slate-200 hover:border-slate-300'">
+                  <label v-for="lang in appLanguages" :key="lang.code"
+                    class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border cursor-pointer transition-colors"
+                    :class="form.languages.includes(lang.code) ? 'border-brand-500 bg-brand-50 text-brand-700' : 'border-slate-200 hover:border-slate-300'">
                     <input type="checkbox" :value="lang.code" v-model="form.languages" class="sr-only">
                     <span class="text-sm">{{ lang.name }}</span>
                   </label>
@@ -264,8 +381,14 @@
         </section>
 
         <div class="flex justify-center">
-          <button @click="generateTicket" :disabled="!canGenerate || isLoading" class="px-8 py-4 bg-brand-500 text-white font-semibold rounded-xl hover:bg-brand-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-3">
-            <svg v-if="isLoading" class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+          <button @click="generateTicket" :disabled="!canGenerate || isLoading"
+            class="px-8 py-4 bg-brand-500 text-white font-semibold rounded-xl hover:bg-brand-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-3">
+            <svg v-if="isLoading" class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+              </path>
+            </svg>
             <span>{{ isLoading ? '產生中...' : '產生 Ticket' }}</span>
           </button>
         </div>
@@ -275,19 +398,28 @@
         <section class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
           <div class="flex items-center justify-between mb-4">
             <h2 class="text-base font-semibold text-slate-800">請勾選需要翻譯的文案</h2>
-            <button @click="toggleAllTexts" class="text-sm text-brand-600 hover:text-brand-700">{{ isAllTextsSelected ? '取消全選' : '全選' }}</button>
+            <button @click="toggleAllTexts" class="text-sm text-brand-600 hover:text-brand-700">{{ isAllTextsSelected ?
+              '取消全選' : '全選' }}</button>
           </div>
           <div class="space-y-2 max-h-96 overflow-y-auto">
-            <label v-for="(text, index) in detectedTexts" :key="index" class="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 cursor-pointer">
+            <label v-for="(text, index) in detectedTexts" :key="index"
+              class="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 cursor-pointer">
               <input type="checkbox" v-model="selectedTexts" :value="text" class="w-4 h-4 rounded">
               <span class="text-sm text-slate-700">{{ text }}</span>
             </label>
           </div>
         </section>
         <div class="flex justify-center gap-4">
-          <button @click="currentStep = 'form'" class="px-6 py-3 border border-slate-300 text-slate-700 font-medium rounded-xl hover:bg-slate-50 transition-colors">返回修改</button>
-          <button @click="proceedToResult" :disabled="isLoading" class="px-8 py-3 bg-brand-500 text-white font-semibold rounded-xl hover:bg-brand-600 disabled:opacity-50 transition-colors flex items-center gap-2">
-            <svg v-if="isLoading" class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+          <button @click="currentStep = 'form'"
+            class="px-6 py-3 border border-slate-300 text-slate-700 font-medium rounded-xl hover:bg-slate-50 transition-colors">返回修改</button>
+          <button @click="proceedToResult" :disabled="isLoading"
+            class="px-8 py-3 bg-brand-500 text-white font-semibold rounded-xl hover:bg-brand-600 disabled:opacity-50 transition-colors flex items-center gap-2">
+            <svg v-if="isLoading" class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+              </path>
+            </svg>
             <span>{{ isLoading ? '產生中...' : '繼續產生' }}</span>
           </button>
         </div>
@@ -297,27 +429,39 @@
         <section class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
           <div class="flex items-center justify-between mb-4">
             <h2 class="text-base font-semibold text-slate-800">Ticket 內容</h2>
-            <button @click="copyToClipboard(ticketResult)" class="flex items-center gap-2 px-4 py-2 text-sm bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-colors">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+            <button @click="copyToClipboard(ticketResult)"
+              class="flex items-center gap-2 px-4 py-2 text-sm bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-colors">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+              </svg>
               複製
             </button>
           </div>
-          <div class="markdown-output bg-slate-50 rounded-xl p-4 max-h-[500px] overflow-y-auto border border-slate-200">{{ ticketResult }}</div>
+          <div class="markdown-output bg-slate-50 rounded-xl p-4 max-h-[500px] overflow-y-auto border border-slate-200">
+            {{ ticketResult }}</div>
         </section>
         <section v-if="translationResult" class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
           <div class="flex items-center justify-between mb-4">
             <h2 class="text-base font-semibold text-slate-800">i18n 翻譯表格</h2>
-            <button @click="copyToClipboard(translationResult)" class="flex items-center gap-2 px-4 py-2 text-sm bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-colors">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+            <button @click="copyToClipboard(translationResult)"
+              class="flex items-center gap-2 px-4 py-2 text-sm bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-colors">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+              </svg>
               複製
             </button>
           </div>
           <div class="overflow-x-auto">
-            <div class="markdown-output bg-slate-50 rounded-xl p-4 border border-slate-200" v-html="renderMarkdownTable(translationResult)"></div>
+            <div class="markdown-output bg-slate-50 rounded-xl p-4 border border-slate-200"
+              v-html="renderMarkdownTable(translationResult)"></div>
           </div>
         </section>
         <div class="flex justify-center gap-4">
-          <button @click="resetForm" class="px-6 py-3 border border-slate-300 text-slate-700 font-medium rounded-xl hover:bg-slate-50 transition-colors">開新的 Ticket</button>
+          <button @click="resetForm"
+            class="px-6 py-3 border border-slate-300 text-slate-700 font-medium rounded-xl hover:bg-slate-50 transition-colors">開新的
+            Ticket</button>
         </div>
       </div>
 
@@ -326,7 +470,8 @@
           <div class="bg-white rounded-2xl p-8 shadow-xl max-w-sm w-full mx-4 text-center">
             <div class="relative w-16 h-16 mx-auto mb-4">
               <div class="absolute inset-0 rounded-full border-4 border-brand-200"></div>
-              <div class="absolute inset-0 rounded-full border-4 border-brand-500 border-t-transparent animate-spin"></div>
+              <div class="absolute inset-0 rounded-full border-4 border-brand-500 border-t-transparent animate-spin">
+              </div>
             </div>
             <p class="text-slate-700 font-medium">{{ loadingMessage }}</p>
             <p class="text-sm text-slate-500 mt-1">請稍候...</p>
@@ -335,19 +480,29 @@
       </transition>
 
       <transition name="fade">
-        <div v-if="showApiKeyModal" class="fixed inset-0 bg-slate-900/50 flex items-center justify-center z-50" @click.self="showApiKeyModal = false">
+        <div v-if="showApiKeyModal" class="fixed inset-0 bg-slate-900/50 flex items-center justify-center z-50"
+          @click.self="showApiKeyModal = false">
           <div class="bg-white rounded-2xl p-6 shadow-xl max-w-md w-full mx-4">
             <h3 class="text-lg font-semibold text-slate-800 mb-4">設定 API Key</h3>
             <div class="space-y-4">
               <div>
                 <label class="block text-sm font-medium text-slate-700 mb-2">Claude API Key</label>
-                <input type="password" v-model="tempApiKey" placeholder="sk-ant-..." class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent">
-                <p class="text-xs text-slate-500 mt-2">輸入自己的 API Key 可不受每日試用限制。<a href="https://console.anthropic.com/" target="_blank" class="text-brand-600 hover:underline">取得 API Key →</a></p>
+                <input type="password" v-model="tempApiKey" placeholder="sk-ant-..."
+                  class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent">
+                <p class="text-xs text-slate-500 mt-2">輸入自己的 API Key 可不受每日試用限制。<a href="https://console.anthropic.com/"
+                    target="_blank" class="text-brand-600 hover:underline">取得 API Key →</a></p>
               </div>
               <div class="flex gap-3">
-                <button @click="showApiKeyModal = false" class="flex-1 px-4 py-2.5 border border-slate-300 text-slate-700 font-medium rounded-xl hover:bg-slate-50">取消</button>
-                <button @click="saveApiKey" :disabled="isValidatingKey" class="flex-1 px-4 py-2.5 bg-brand-500 text-white font-medium rounded-xl hover:bg-brand-600 disabled:opacity-50 flex items-center justify-center gap-2">
-                  <svg v-if="isValidatingKey" class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                <button @click="showApiKeyModal = false"
+                  class="flex-1 px-4 py-2.5 border border-slate-300 text-slate-700 font-medium rounded-xl hover:bg-slate-50">取消</button>
+                <button @click="saveApiKey" :disabled="isValidatingKey"
+                  class="flex-1 px-4 py-2.5 bg-brand-500 text-white font-medium rounded-xl hover:bg-brand-600 disabled:opacity-50 flex items-center justify-center gap-2">
+                  <svg v-if="isValidatingKey" class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                    </path>
+                  </svg>
                   {{ isValidatingKey ? '驗證中...' : '儲存' }}
                 </button>
               </div>
@@ -361,9 +516,14 @@
 
       <transition name="slide">
         <div v-if="toast.show" class="fixed bottom-6 right-6 z-50">
-          <div class="px-4 py-3 rounded-xl shadow-lg flex items-center gap-3" :class="toast.type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'">
-            <svg v-if="toast.type === 'success'" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-            <svg v-else class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+          <div class="px-4 py-3 rounded-xl shadow-lg flex items-center gap-3"
+            :class="toast.type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'">
+            <svg v-if="toast.type === 'success'" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            <svg v-else class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
             <span>{{ toast.message }}</span>
           </div>
         </div>
@@ -421,9 +581,9 @@
         const isAllTextsSelected = computed(() => detectedTexts.value.length > 0 && selectedTexts.value.length === detectedTexts.value.length);
 
         const showToast = (message, type = 'success') => { toast.message = message; toast.type = type; toast.show = true; setTimeout(() => { toast.show = false; }, 3000); };
-        const checkAuthRequired = async () => { if (!apiBaseUrl) return; try { const res = await fetch(`${apiBaseUrl}/api/auth/check`); const data = await res.json(); requireLogin.value = data.requireLogin; } catch (e) {} };
-        const checkApiStatus = async () => { if (!apiBaseUrl) return; try { const res = await fetch(`${apiBaseUrl}/api/status`); const data = await res.json(); Object.assign(apiStatus, data); } catch (e) {} };
-        
+        const checkAuthRequired = async () => { if (!apiBaseUrl) return; try { const res = await fetch(`${apiBaseUrl}/api/auth/check`); const data = await res.json(); requireLogin.value = data.requireLogin; } catch (e) { } };
+        const checkApiStatus = async () => { if (!apiBaseUrl) return; try { const res = await fetch(`${apiBaseUrl}/api/status`); const data = await res.json(); Object.assign(apiStatus, data); } catch (e) { } };
+
         const login = async () => {
           if (!loginForm.username || !loginForm.password) return;
           isLoggingIn.value = true;
@@ -435,14 +595,14 @@
             showToast('登入成功'); checkApiStatus();
           } catch (e) { showToast(e.message, 'error'); } finally { isLoggingIn.value = false; }
         };
-        
+
         const logout = async () => {
-          try { await fetch(`${apiBaseUrl}/api/auth/logout`, { method: 'POST', headers: { 'Authorization': `Bearer ${authToken.value}` } }); } catch (e) {}
+          try { await fetch(`${apiBaseUrl}/api/auth/logout`, { method: 'POST', headers: { 'Authorization': `Bearer ${authToken.value}` } }); } catch (e) { }
           authToken.value = ''; isLoggedIn.value = false; localStorage.removeItem('demo_token');
           loginForm.username = ''; loginForm.password = '';
           showToast('已登出');
         };
-        
+
         const saveApiKey = async () => {
           if (!tempApiKey.value.trim()) { showToast('請輸入 API Key', 'error'); return; }
           isValidatingKey.value = true;
@@ -468,16 +628,16 @@
         const isAllSelected = (platform) => (platform === 'web' ? webLanguages : appLanguages).every(l => form.languages.includes(l.code));
         const toggleAllLanguages = (platform) => { const langs = platform === 'web' ? webLanguages : appLanguages; if (isAllSelected(platform)) { form.languages = form.languages.filter(l => !langs.map(x => x.code).includes(l)); } else { form.languages.push(...langs.map(l => l.code).filter(l => !form.languages.includes(l))); } };
         const toggleAllTexts = () => { selectedTexts.value = isAllTextsSelected.value ? [] : [...detectedTexts.value]; };
-        
+
         const callClaudeAPI = async (messages) => {
           const useOwnKey = !!userApiKey.value;
           const url = useOwnKey ? `${apiBaseUrl}/api/chat-with-key` : `${apiBaseUrl}/api/chat`;
           const headers = { 'Content-Type': 'application/json' };
-          
+
           if (!useOwnKey && authToken.value) {
             headers['Authorization'] = `Bearer ${authToken.value}`;
           }
-          
+
           const body = { model: CONFIG.CLAUDE_MODEL, max_tokens: CONFIG.MAX_TOKENS, messages };
           if (useOwnKey) {
             body.apiKey = userApiKey.value;
@@ -487,7 +647,7 @@
           if (!res.ok) { const err = await res.json(); if (res.status === 401) { isLoggedIn.value = false; authToken.value = ''; localStorage.removeItem('demo_token'); } throw new Error(err.error?.message || err.error || '呼叫 API 失敗'); }
           const data = await res.json(); if (!useOwnKey) checkApiStatus(); return data.content[0].text;
         };
-        
+
         const generateTicket = async () => {
           if (!canGenerate.value) return;
           isLoading.value = true;
@@ -498,7 +658,7 @@
             currentStep.value = 'result';
           } catch (error) { showToast(error.message, 'error'); } finally { isLoading.value = false; }
         };
-        
+
         const detectTexts = async () => {
           const imageContents = form.images.map(img => ({ type: 'image', source: { type: 'base64', media_type: img.file.type, data: img.base64 } }));
           const prompt = `# Role\n你是一個文字辨識助手，負責從截圖中提取所有 UI 上的文字內容。\n\n# Task\n1. 仔細檢視每一張截圖\n2. 提取所有可見的 UI 文字\n3. 合併所有截圖的文字\n4. 去除重複項目\n5. 過濾掉不需翻譯的內容（純數字、email、網址、版本號）\n\n# Output Format\n直接輸出文字清單，每行一個，不要加任何前綴符號或編號`;
@@ -506,7 +666,7 @@
           detectedTexts.value = result.split('\n').map(t => t.trim()).filter(t => t.length > 0 && !t.startsWith('-') && !t.startsWith('•'));
           selectedTexts.value = [...detectedTexts.value];
         };
-        
+
         const proceedToResult = async () => {
           isLoading.value = true;
           try {
@@ -515,7 +675,7 @@
             currentStep.value = 'result';
           } catch (error) { showToast(error.message, 'error'); } finally { isLoading.value = false; }
         };
-        
+
         const generateTicketContent = async () => {
           loadingMessage.value = '產生 Ticket 內容中...';
           const scopeMap = { frontend: '前端', backend: '後端', fullstack: '全端' };
@@ -528,7 +688,7 @@
           const prompt = `# Role\n你是一個專業的 PM 助手，專門協助撰寫開發 ticket。\n\n# Input\n- 問題/功能描述：${form.description}\n- Ticket 類型：${form.type}\n- 影響範圍：${scopeMap[form.scope]}\n- 優先級：${priorityMap[form.priority]}\n- 平台：${platformMap[form.platform]}\n- Figma 連結：${form.figmaUrl || '無'}${testAccountPrompt}\n\n# Output Format\n${template}\n\n# 注意事項\n- 使用繁體中文\n- 技術名詞可使用英文\n- 保持描述簡潔但完整\n- 仔細觀察截圖內容來補充細節\n- 如果資訊不足，標註 [需補充]`;
           ticketResult.value = await callClaudeAPI([{ role: 'user', content: [{ type: 'text', text: prompt }, ...imageContents] }]);
         };
-        
+
         const generateTranslation = async () => {
           const allLangs = form.platform === 'app' ? appLanguages : webLanguages;
           const selectedLangs = allLangs.filter(l => form.languages.includes(l.code));
@@ -536,7 +696,7 @@
           const prompt = `# Role\n你是一個專業的多語系翻譯助手。\n\n# Input\n需翻譯的文案：\n${selectedTexts.value.map(t => `- ${t}`).join('\n')}\n\n目標語言：${langNames}\n\n# Output Format\n以 Markdown 表格格式輸出\n\n# 翻譯原則\n1. 保持一致性\n2. 符合平台慣例\n3. 長度考量\n4. 語氣一致\n5. 品牌名稱不翻譯`;
           translationResult.value = await callClaudeAPI([{ role: 'user', content: prompt }]);
         };
-        
+
         const renderMarkdownTable = (md) => {
           if (!md) return '';
           const lines = md.trim().split('\n').filter(l => l.includes('|'));
@@ -545,7 +705,7 @@
           lines.forEach((line, i) => { if (line.includes('---')) return; const cells = line.split('|').filter(c => c.trim()); const tag = i === 0 ? 'th' : 'td'; html += '<tr>'; cells.forEach(cell => { html += `<${tag} class="whitespace-nowrap">${cell.trim()}</${tag}>`; }); html += '</tr>'; });
           html += '</table>'; return html;
         };
-        
+
         const copyToClipboard = async (text) => { try { await navigator.clipboard.writeText(text); showToast('已複製到剪貼簿'); } catch (e) { showToast('複製失敗', 'error'); } };
         const resetForm = () => { Object.assign(form, { type: 'feat', description: '', scope: 'frontend', priority: 'normal', platform: 'web', figmaUrl: '', images: [], needTranslation: false, languages: [], testAccount: '', testPassword: '' }); detectedTexts.value = []; selectedTexts.value = []; ticketResult.value = ''; translationResult.value = ''; currentStep.value = 'form'; };
 
@@ -560,4 +720,5 @@
     }).mount('#app');
   </script>
 </body>
+
 </html>
